@@ -8,7 +8,7 @@ grind: pro2
 	valgrind --leak-check=full --show-reachable=yes -v ./pro2
 
 put:
-	git add *
+	-git add *
 	git commit 
 	git push
 
