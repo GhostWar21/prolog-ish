@@ -11,6 +11,11 @@ public:
   TermCons *head;
   Goal *body;
   Clause(TermCons *h, Goal *t) : head(h), body(t) {}
+  ~Clause() 
+  {
+    if(head != NULL) delete head;
+    if(body != NULL) delete body;
+  }
   Clause *copy() 
   { 
     return new Clause(head->copy2(), body==NULL ? NULL : body->copy()); 

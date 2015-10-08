@@ -13,8 +13,8 @@ public:
     Goal(TermCons *h, Goal *t) : car(h), cdr(t) {}
     ~Goal()
     {
-      delete car;
-      delete cdr;
+      if(car != NULL) delete car;
+      if(cdr != NULL) delete cdr;
     }
 
     Goal *copy()
