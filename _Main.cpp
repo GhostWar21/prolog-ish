@@ -53,13 +53,15 @@ TermVar *varvar[] = {v_i, v_j};
 std::string varname[] =  {"I", "J"};
 TermVarMapping *var_name_map = new TermVarMapping(varvar, varname, 2);
 
+for(int i=0;i< 10; i++)
+{
+   std::cout << "\n\nRound " << i << "\n";
    std::cout << "=======Append with normal clause order:\n";
    g1->solve(test_p, 0, var_name_map);
    std::cout << "\n=======Append with reversed normal clause order:\n";
    g1->solve(test_p2, 0, var_name_map);
-
-std::cout << "g1\n";
-//delete g1;
+}
+std::cout << "\n\nDONE\n";
 std::cout << "test_p\n";
 delete test_p;
 std::cout << "test_p2\n";

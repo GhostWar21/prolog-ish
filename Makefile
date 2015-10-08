@@ -5,7 +5,7 @@ pro: prolog.cpp
 	g++ prolog.cpp -o pro
 
 grind: pro2
-	valgrind --leak-check=full --show-reachable=yes -v ./pro2
+	valgrind --track-origins=yes --leak-check=full --show-reachable=yes -v ./pro2
 
 put:
 	-git add *
