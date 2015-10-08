@@ -4,27 +4,25 @@
 /* Copyright (c) Alan Mycroft, University of Cambridge, 2000.           */
 
 #include <iostream>
-using namespace std;
+//using namespace std;
 #include <string.h>
 
-void indent(int n)
-{   for (int i = 0; i<n; i++) cout << "    ";
-}
+void indent(int n) {   for (int i = 0; i<n; i++) std::cout << "    "; }
 
 class Atom {
-    char *atomname;
-public: Atom(char *s) : atomname(s) {}
-    void print() { cout<<atomname; }
-    bool eqatom(Atom *t) { return strcmp(atomname, t->atomname) == 0; }
+    std::string atomname;
+public: Atom(std::string s) : atomname(s) {}
+    void print() { std::cout<<atomname; }
+    bool eqatom(Atom *t) { return this->atomname == t->atomname; }
 };
 
 class TermCons;
 
 class Term {
-public: virtual void print() = 0;
-public: virtual bool unify(Term *) = 0;
-public: virtual bool unify2(TermCons *) = 0;
-public: virtual Term *copy() = 0;
+  public: virtual void print() = 0;
+  public: virtual bool unify(Term *) = 0;
+  public: virtual bool unify2(TermCons *) = 0;
+  public: virtual Term *copy() = 0;
 };
 
 class TermCons : public Term {
@@ -45,12 +43,12 @@ public:
             { args[0]=a1, args[1]=a2, args[2]=a3; };
     void print() { fsym->print();
                    if (arity>0)
-                   {   cout <<"(";
+                   {   std::cout <<"(";
                        for (int i = 0; i<arity; )
                        {   args[i]->print();
-                           if (++i < arity) cout << ",";
+                           if (++i < arity) std::cout << ",";
                        }
-                       cout <<")";
+                       std::cout <<")";
                    }
                  }
     bool unify(Term *t) { return t->unify2(this); }
@@ -78,10 +76,10 @@ private:
 public:
     TermVar() : instance(this), varno(++timestamp) {}
     void print() { if (instance!=this) instance->print();
-                   else cout<<"_"<<varno; };
+                   else std::cout<<"_"<<varno; };
     bool unify(Term *t);
     Term *copy();
-    Term *reset() { instance = this; }
+    Term *reset() { instance = this; return this; }
 private:
     bool unify2(TermCons *t) { return this->unify(t); }
 };
@@ -102,7 +100,7 @@ public:
     Goal *append(Goal *l) { return new Goal(car,
                                    cdr==NULL ? NULL : cdr->append(l)); }
     void print() { car->print();
-                   if (cdr != NULL) { cout << "; ", cdr->print(); }
+                   if (cdr != NULL) { std::cout << "; ", cdr->print(); }
                  }
     void solve(Program *p, int level, TermVarMapping *map);
 };
@@ -115,8 +113,8 @@ public:
     Clause *copy() { return new Clause(head->copy2(),
                                        body==NULL ? NULL : body->copy()); }
     void print() { head->print();
-                   cout << " :- ";
-                   if (body==NULL) cout << "true";
+                   std::cout << " :- ";
+                   if (body==NULL) std::cout << "true";
                    else body->print();
                  }
 };
@@ -157,36 +155,36 @@ Term *TermVar::copy() {
 class TermVarMapping {
 private:
     TermVar **varvar;
-    char **vartext;
+    std::string *vartext;
     int size;
 public:
-    TermVarMapping(TermVar *vv[], char *vt[], int vs)
+    TermVarMapping(TermVar *vv[], std::string vt[], int vs)
         :varvar(vv), vartext(vt), size(vs) {}
     void showanswer()
-    {   if (size == 0) cout << "yes\n";
+    {   if (size == 0) std::cout << "yes\n";
         else
         {   for (int i = 0; i < size; i++)
-            {   cout << vartext[i] << " = "; varvar[i]->print(); cout << "\n";
+            {   std::cout << vartext[i] << " = "; varvar[i]->print(); std::cout << "\n";
             }
         }
     }
 };
 
 void Goal::solve(Program *p, int level, TermVarMapping *map)
-{   indent(level); cout << "solve@"  << level << ": ";
-                   this->print(); cout << "\n";
+{   indent(level); std::cout << "solve@"  << level << ": ";
+                   this->print(); std::cout << "\n";
     for (Program *q = p; q != NULL; q = q->pcdr)
     {   Trail *t = Trail::Note();
         Clause *c = q->pcar->copy();
         Trail::Undo(t);
-        indent(level); cout << "  try:"; c->print(); cout << "\n";
+        indent(level); std::cout << "  try:"; c->print(); std::cout << "\n";
         if (car->unify(c->head))
         {   Goal *gdash = c->body==NULL ? cdr : c->body->append(cdr);
             if (gdash == NULL) map->showanswer();
             else gdash->solve(p, level+1, map);
         }
         else
-        {   indent(level); cout << "  nomatch.\n";
+        {   indent(level); std::cout << "  nomatch.\n";
         }
         Trail::Undo(t);
     }
@@ -227,14 +225,14 @@ Program *test_p = new Program(c1, new Program(c2, NULL));
 Program *test_p2 = new Program(c2, new Program(c1, NULL));
 
 TermVar *varvar[] = {v_i, v_j};
-char *varname[] =  {"I", "J"};
+std::string varname[] =  {"I", "J"};
 TermVarMapping *var_name_map = new TermVarMapping(varvar, varname, 2);
 
 int main(int argc, char *argv[])
 {
-   cout << "=======Append with normal clause order:\n";
+   std::cout << "=======Append with normal clause order:\n";
    g1->solve(test_p, 0, var_name_map);
-   cout << "\n=======Append with reversed normal clause order:\n";
+   std::cout << "\n=======Append with reversed normal clause order:\n";
    g1->solve(test_p2, 0, var_name_map);
    return 0;
 }
