@@ -17,6 +17,14 @@ public:
 
     TermCons(Atom *f, Term *a1, Term *a2, Term *a3) : fsym(f), arity(3), args(new Term*[3]) { args[0]=a1, args[1]=a2, args[2]=a3; };
 
+    ~TermCons()
+    {
+	delete fsym;
+        for(int i=0;i < arity; i++)
+	  delete args[i];
+        if(arity > 0)
+          delete args;
+    }
     void print() 
     {  
       fsym->print();

@@ -13,6 +13,8 @@
 #include "Trail.h"
 
 
+int main(int argc, char *argv[])
+{
 /* A sample test program: append */
 
 Atom *at_app = new Atom("app");
@@ -51,8 +53,6 @@ TermVar *varvar[] = {v_i, v_j};
 std::string varname[] =  {"I", "J"};
 TermVarMapping *var_name_map = new TermVarMapping(varvar, varname, 2);
 
-int main(int argc, char *argv[])
-{
    std::cout << "=======Append with normal clause order:\n";
    g1->solve(test_p, 0, var_name_map);
    std::cout << "\n=======Append with reversed normal clause order:\n";

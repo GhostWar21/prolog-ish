@@ -8,6 +8,7 @@ class TermCons;
 class Term 
 {
 public: 
+  virtual ~Term() {};
   virtual void print() = 0;
   virtual bool unify(Term *) = 0;
   virtual bool unify2(TermCons *) = 0;
