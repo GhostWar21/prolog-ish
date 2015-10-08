@@ -1,12 +1,14 @@
 #include <iostream>
 #include <string.h>
 
-void indent(int n) {   for (int i = 0; i<n; i++) std::cout << "    "; }
+#pragma once
 
-class Atom {
-    std::string atomname;
-public: Atom(std::string s) : atomname(s) {}
-    void print() { std::cout<<atomname; }
-    bool eqatom(Atom *t) { return this->atomname == t->atomname; }
+class Atom 
+{
+public: Atom(std::string s) : name(s) {}
+  void print() { std::cout<<name; }
+  bool eqatom(Atom *t) { return this->name == t->name; }
+private:
+  std::string name;
 };
 
