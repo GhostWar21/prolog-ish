@@ -13,6 +13,10 @@ private:
     static int timestamp;
 public:
     TermVar() : instance(this), varno(++timestamp) {}
+    ~TermVar() 
+    {
+      delete instance;
+    }
     void print() 
     { 
       if (instance!=this) 

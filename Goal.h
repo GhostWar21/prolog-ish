@@ -11,6 +11,11 @@ class TermVarMapping;
 class Goal {
 public:
     Goal(TermCons *h, Goal *t) : car(h), cdr(t) {}
+    ~Goal()
+    {
+      delete car;
+      delete cdr;
+    }
 
     Goal *copy()
     { 
