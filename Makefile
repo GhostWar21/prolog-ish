@@ -15,4 +15,4 @@ put:
 pull:
 	clear
 	git pull
-	Make grind
+	make grind
