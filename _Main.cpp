@@ -57,5 +57,12 @@ TermVarMapping *var_name_map = new TermVarMapping(varvar, varname, 2);
    g1->solve(test_p, 0, var_name_map);
    std::cout << "\n=======Append with reversed normal clause order:\n";
    g1->solve(test_p2, 0, var_name_map);
+
+std::cout << "g1\n";
+//delete g1;
+std::cout << "test_p\n";
+delete test_p;
+std::cout << "test_p2\n";
+delete test_p2;
    return 0;
 }
